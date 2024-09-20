@@ -1,18 +1,17 @@
 import mongoose from "mongoose"
 
-const userSchema= new mongoose.Schema(
-{
+const teacherSchema= new mongoose.Schema({
     FirstName:{
         type:String,
         required:true
     },
     LastName:{
-        type:String,
+        type:String
     },
     email:{
         type:String,
         required:true,
-        unique:true
+        unique:true  
     },
     password:{
         type:String,
@@ -20,21 +19,19 @@ const userSchema= new mongoose.Schema(
     },
     Phone:{
         type:Number,
-        required:true
+        required:true,
+        unique:true
     },
     University:{
         type:String,
         required:true
     },
-    Course:{
+    Course:[{
         type:String,
         required:true
-    },
-    role:{
-        type:String,
-        enum:["Leader","Member"]
-    }
+    }],
 },
-{timestamps:true});
+{timestamps:true})
 
-export default mongoose.model("user",userSchema)
+
+export default mongoose.model("teacher",teacherSchema)
