@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../styles/RegisterForm.css";
+import { useSelector } from "react-redux";
 
-export default function RegisterForm(props) {
+export default function RegisterForm() {
+  const formType = useSelector((state) => state.form);
+
+  const [regData, setRegData] = useState({
+    fname: "",
+    lname: "",
+    email: "",
+    password: "",
+    phone: "",
+    university: "",
+    course: "",
+  })
+
   return (
     <>
       <div className="form-container mx-auto flex flex-col items-center">
         <div className="form-heading mt-4 noto-sans-warang-citi-regular">
-          {props.type === "teacher"
+          {formType === "teacher"
             ? `Teacher Registration`
             : `Student Registration`}
         </div>
