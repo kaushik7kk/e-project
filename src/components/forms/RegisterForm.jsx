@@ -11,9 +11,23 @@ export default function RegisterForm() {
     email: "",
     password: "",
     phone: "",
-    university: "",
-    course: "",
-  })
+    university: "ipu",
+    course: "mca",
+  });
+
+  const handleChange = (e) => {
+    const { id, value } = e.target;
+    setRegData({
+      ...regData,
+      [id]: value,
+    });
+  };
+
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    
+  }
 
   return (
     <>
@@ -23,14 +37,17 @@ export default function RegisterForm() {
             ? `Teacher Registration`
             : `Student Registration`}
         </div>
-        <form action="" className="mt-5">
+        <form action="" className="mt-5" onSubmit={handleSubmit}>
           <div className="input-group flex justify-between items-center">
             <label htmlFor="fname">First Name:</label>
             <input
               type="text"
               placeholder="Enter first name..."
+              name="fname"
               id="fname"
               className="mx-4 my-3 p-2"
+              onChange={handleChange}
+              value={regData.fname}
             />
           </div>
           <div className="input-group flex justify-between items-center">
@@ -38,8 +55,11 @@ export default function RegisterForm() {
             <input
               type="text"
               placeholder="Enter last name..."
+              name="lname"
               id="lname"
               className="mx-4 my-3 p-2"
+              onChange={handleChange}
+              value={regData.lname}
             />
           </div>
           <div className="input-group flex justify-between items-center">
@@ -47,8 +67,11 @@ export default function RegisterForm() {
             <input
               type="email"
               placeholder="Enter email..."
+              name="email"
               id="email"
               className="mx-4 my-3 p-2"
+              onChange={handleChange}
+              value={regData.email}
             />
           </div>
           <div className="input-group flex justify-between items-center">
@@ -56,8 +79,11 @@ export default function RegisterForm() {
             <input
               type="password"
               placeholder="Enter password..."
+              name="password"
               id="password"
               className="mx-4 my-3 p-2"
+              onChange={handleChange}
+              value={regData.password}
             />
           </div>
           <div className="input-group flex justify-between items-center">
@@ -65,27 +91,37 @@ export default function RegisterForm() {
             <input
               type="number"
               placeholder="Enter phone number..."
+              name="phone"
               id="phone"
               className="mx-4 my-3 p-2"
+              onChange={handleChange}
+              value={regData.phone}
             />
           </div>
           <div className="input-group flex justify-between items-center">
             <label htmlFor="university">University:</label>
-            <input
-              type="text"
-              placeholder="Enter university..."
+            <select
+              name="university"
               id="university"
               className="mx-4 my-3 p-2"
-            />
+              onChange={handleChange}
+              value={regData.university}
+            >
+              <option value="ipu">IPU</option>
+              <option value="du">DU</option>
+            </select>
           </div>
-          <div className="input-group flex justify-between items-center">
+          <div className="input-group flex justify-around items-center">
             <label htmlFor="Course">Course:</label>
-            <input
-              type="text"
-              placeholder="Enter course..."
+            <select
+              name="course"
               id="course"
-              className="mx-4 my-3 p-2"
-            />
+              onChange={handleChange}
+              value={regData.course}
+            >
+              <option value="mca">MCA</option>
+              <option value="bca">BCA</option>
+            </select>
           </div>
           <div className="input-group flex justify-center mt-2">
             <button type="submit" className="p-4 noto-sans-warang-citi-regular">

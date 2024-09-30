@@ -5,7 +5,6 @@ import { toggleForm } from "../store/formReducer";
 
 export default function Toggle() {
   const formType = useSelector((state) => state.form);
-  console.log(formType);
 
   const dispatch = useDispatch();
 

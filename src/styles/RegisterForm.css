@@ -18,7 +18,7 @@
   color: rgb(7, 60, 106);
 }
 
-.input-group input {
+.input-group input, .input-group select {
     background-color: rgb(246, 234, 234);
     border-radius: 5px;
     height: 5vh;
