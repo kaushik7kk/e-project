@@ -1,11 +1,11 @@
 import mongoose from "mongoose"
 
 const teacherSchema= new mongoose.Schema({
-    FirstName:{
+    fname:{
         type:String,
         required:true
     },
-    LastName:{
+    lname:{
         type:String
     },
     email:{
@@ -17,16 +17,16 @@ const teacherSchema= new mongoose.Schema({
         type:String,
         required:true
     },
-    Phone:{
+    phone:{
         type:Number,
         required:true,
         unique:true
     },
-    University:{
+    university:{
         type:String,
         required:true
     },
-    Course:[{
+    course:[{
         type:String,
         required:true
     }],

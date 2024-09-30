@@ -1,13 +1,17 @@
 import React from "react";
 import "../../styles/RegisterForm.css";
+import { useSelector } from "react-redux";
 
-export default function LoginForm(props) {
+export default function LoginForm() {
+
+  const formType = useSelector(state => state.form);
+
   return (
     <>
       <>
-        <div className="form-container mx-auto mt-20 flex flex-col items-center">
+        <div className="form-container mx-auto mt-7 flex flex-col items-center">
           <div className="form-heading mt-4 noto-sans-warang-citi-regular">
-            {props.type === "teacher"
+            {formType === "teacher"
               ? `Teacher Login`
               : `Student Login`}
           </div>

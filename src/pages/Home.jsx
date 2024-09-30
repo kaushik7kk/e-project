@@ -19,17 +19,11 @@ export default function Home() {
           quisquam quo, blanditiis repellendus ex minus laboriosam mollitia.
         </div>
         <div className="links flex flex-col justify-between items-center p-5 my-auto">
-          <Link to={`/register/t`} className="p-2 text-center">
-            Register as Teacher
+          <Link to={`/register`} className="p-2 text-center">
+            Register
           </Link>
-          <Link to={`/register/s`} className="p-2 text-center">
-            Register as Student
-          </Link>
-          <Link to={`/login/t`} className="p-2 text-center">
-            Login as Teacher
-          </Link>
-          <Link to={`/login/s`} className="p-2 text-center">
-            Login as Student
+          <Link to={`/login`} className="p-2 text-center">
+            Login
           </Link>
         </div>
       </div>

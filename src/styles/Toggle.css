@@ -1,0 +1,50 @@
+.form-toggle {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  /* border: 1px solid black; */
+  width: 20vw;
+  height: 7vh;
+  margin: 0 auto;
+  font-size: 1.2rem;
+}
+
+.toggle-container {
+  width: 5vw;
+  height: 5vh;
+  border: 1px solid black;
+  border-radius: 20px;
+  /* margin: 0 auto; */
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.2rem;
+  background-color: cornflowerblue;
+  /* transition: all 0.5s; */
+}
+
+.student-toggle {
+  justify-content: flex-start;
+}
+
+.teacher-toggle {
+  justify-content: flex-end;
+}
+
+.toggle-button {
+  width: 2vw;
+  height: 4vh;
+  border: 1px solid black;
+  border-radius: 50%;
+  background-color: aliceblue;
+}
+
+.form-toggle span {
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.form-toggle span:hover {
+  color: darkblue;
+}
