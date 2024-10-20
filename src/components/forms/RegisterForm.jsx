@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../../styles/RegisterForm.css";
 import { useSelector } from "react-redux";
+import axios from "axios";
 
 export default function RegisterForm() {
   const formType = useSelector((state) => state.form);
@@ -23,11 +24,26 @@ export default function RegisterForm() {
     });
   };
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
-    
-  }
+    if (formType === "student" ) {
+      const res = axios.post("http://localhost:8000/api/v1/auth/register/student", {
+          fname: regData.fname,
+          lname: regData.lname,
+          email: regData.email,
+          password: regData.password,
+          phone: regData.phone,
+          university: regData.university,
+          course: regData.course,
+        });
+        if (res.data.success) {
+          
+        }
+    } else {
+
+    }
+  };
 
   return (
     <>
@@ -94,6 +110,8 @@ export default function RegisterForm() {
               name="phone"
               id="phone"
               className="mx-4 my-3 p-2"
+              minLength={10}
+              maxLength={10}
               onChange={handleChange}
               value={regData.phone}
             />

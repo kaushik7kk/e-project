@@ -1,8 +1,9 @@
 import express from "express";
 import connectDB from "./db.js"
 import dotenv from "dotenv";
-import cors from "cors"
-import authRoute from "./Routes/authRoutes.js"
+import cors from "cors";
+import authRoute from "./Routes/authRoutes.js";
+import courseRoute from "./Routes/courseRoutes.js";
 dotenv.config();  
 
 const app = express();
@@ -14,6 +15,7 @@ app.use(cors())
 app.use(express.json())
 
 app.use('/api/v1/auth',authRoute)
+app.use('/api/v1/course',courseRoute)
 
 app.listen(PORT, () => {
   console.log(
