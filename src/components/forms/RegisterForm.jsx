@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../styles/RegisterForm.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
+import { getCourses } from "../../store/courseReducer";
 
 export default function RegisterForm() {
   const formType = useSelector((state) => state.form);
+  const dispatch = useDispatch();
+
+  const courses = useSelector((state) => state.course);
 
   const [regData, setRegData] = useState({
     fname: "",
@@ -12,9 +16,13 @@ export default function RegisterForm() {
     email: "",
     password: "",
     phone: "",
-    university: "ipu",
-    course: "mca",
+    university: "IPU",
+    course: "MCA",
   });
+
+  useEffect(() => {
+    dispatch(getCourses(regData.university));
+  }, [dispatch, regData]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -27,8 +35,10 @@ export default function RegisterForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (formType === "student" ) {
-      const res = axios.post("http://localhost:8000/api/v1/auth/register/student", {
+    if (formType === "student") {
+      const res = axios.post(
+        "http://localhost:8000/api/v1/auth/register/student",
+        {
           fname: regData.fname,
           lname: regData.lname,
           email: regData.email,
@@ -36,12 +46,12 @@ export default function RegisterForm() {
           phone: regData.phone,
           university: regData.university,
           course: regData.course,
-        });
-        if (res.data.success) {
-          
         }
+      );
+      if (res.data.success) {
+        console.log("Success");
+      }
     } else {
-
     }
   };
 
@@ -125,8 +135,8 @@ export default function RegisterForm() {
               onChange={handleChange}
               value={regData.university}
             >
-              <option value="ipu">IPU</option>
-              <option value="du">DU</option>
+              <option value="IPU">IPU</option>
+              <option value="DU">DU</option>
             </select>
           </div>
           <div className="input-group flex justify-around items-center">
@@ -137,8 +147,9 @@ export default function RegisterForm() {
               onChange={handleChange}
               value={regData.course}
             >
-              <option value="mca">MCA</option>
-              <option value="bca">BCA</option>
+              {courses.map((course) => {
+                return <option value={course}>{course}</option>;
+              })}
             </select>
           </div>
           <div className="input-group flex justify-center mt-2">
