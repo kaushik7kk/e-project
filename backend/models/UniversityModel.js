@@ -12,4 +12,4 @@ const universitySchema = new mongoose.Schema({
     ]
 })
 
-export default mongoose.model("university", universitySchema);
+export default mongoose.model("university", universitySchema, "university");
