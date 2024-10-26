@@ -16,18 +16,18 @@ export const registerController = async (req, res) => {
     if (!password) {
       return res.send({ message: "Password is Required" });
     }
-    if (!Phone) {
+    if (!phone) {
       return res.send({ message: "Phone is Required" });
     }
-    if (!University) {
+    if (!university) {
       return res.send({ message: "University is Required" });
     }
-    if (!Course) {
+    if (!course) {
       return res.send({ message: "Course is Required" });
     }
     const existingUser = await UserModel.findOne({ email });
     if (existingUser) {
-      return res.status(200).send({
+      return res.status(500).send({
         success: false,
         message: "Email Already Exist",
       });
@@ -60,7 +60,6 @@ export const registerTeacher = async (req, res) => {
   try {
     const { fname, lname, email, password, phone, university, course } =
       req.body;
-    console.log("yaha");
     if (!fname) {
       return res.send({ message: "FirstName is Required" });
     }
@@ -76,9 +75,9 @@ export const registerTeacher = async (req, res) => {
     if (!university) {
       return res.send({ message: "University is Required" });
     }
-    // if(!Course.count()>0){
-    //     return res.send({message:"Course is Required"})
-    // }
+    if(!course.count()>0){
+        return res.send({message:"Course is Required"})
+    }
     const existingUser = await TeacherModel.findOne({ email });
     if (existingUser) {
       return res.status(200).send({
@@ -207,7 +206,7 @@ export const teacherLogin = async (req, res) => {
   } catch (error) {
     res.status(500).send({
       success: false,
-      message: "Errro in Login",
+      message: "Error in Login",
       error,
     });
   }
