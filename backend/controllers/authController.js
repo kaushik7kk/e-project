@@ -113,12 +113,12 @@ export const StudentLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     if (!email || !password) {
-      return res.status(404).send({
+      return res.status(400).send({
         success: false,
         message: "Invalid Email or Password",
       });
     }
-    const user = UserModel.findOne({ email });
+    const user = await UserModel.findOne({ email });
     if (!user) {
       return res.status(404).send({
         success: false,
@@ -126,9 +126,9 @@ export const StudentLogin = async (req, res) => {
       });
     }
 
-    const match = comparePassword(password, user.password);
+    const match = await comparePassword(password, user.password);
     if (!match) {
-      return res.status(200).send({
+      return res.status(401).send({
         success: false,
         message: "Invalid Password",
       });
@@ -171,14 +171,14 @@ export const teacherLogin = async (req, res) => {
         message: "Invalid Email or Password",
       });
     }
-    const user = TeacherModel.findOne({ email });
+    const user = await TeacherModel.findOne({ email });
     if (!user) {
       return res.status(404).send({
         success: false,
         message: "User not found",
       });
     }
-    const match = comparePassword(password, user.password);
+    const match = await comparePassword(password, user.password);
     if (!match) {
       return res.status(200).send({
         success: true,
