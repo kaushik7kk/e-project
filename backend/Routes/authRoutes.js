@@ -9,4 +9,4 @@ router.post('/login/student',StudentLogin)
 router.post('/login/teacher',teacherLogin)
   
 
-export default router
+export default router;

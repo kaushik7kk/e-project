@@ -14,10 +14,11 @@
 .form-heading {
   font-weight: 700;
   font-size: 1.3rem;
+  /* transition: all 0.3s; */
   color: rgb(7, 60, 106);
 }
 
-.input-group input {
+.input-group input, .input-group select {
     background-color: rgb(246, 234, 234);
     border-radius: 5px;
     height: 5vh;
@@ -29,4 +30,34 @@
     border-radius: 20px;
     width: 10vw;
     font-weight: 700;
+}
+
+.dropdown-header {
+  cursor: pointer;
+  padding: 10px;
+  background-color: rgb(246, 234, 234);
+  border-radius: 5px;
+  height: 6vh;
+  width: 15vw;
+  text-align: center;
+}
+
+.dropdown-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  border: 1px solid #ccc;
+  background-color: rgb(246, 234, 234);
+  position: absolute;
+  z-index: 1;
+  width: 15vw; 
+}
+
+.dropdown-list li {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.dropdown-list li:hover {
+  background-color: #f0f0f0;
 }
