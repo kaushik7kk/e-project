@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { login } from "../../store/authReducer";
+import { useNavigate } from "react-router";
 
 export default function LoginForm() {
   const initialLoginData = useMemo(
@@ -15,8 +16,15 @@ export default function LoginForm() {
   );
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const authDetails = useSelector(state => state.auth);
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate])
 
   const formType = useSelector((state) => state.form);
 
