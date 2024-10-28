@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { getCourses, toggleSelected } from "../../store/courseReducer";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 export default function RegisterForm() {
   const initialRegData = useMemo(
@@ -20,9 +21,18 @@ export default function RegisterForm() {
   const [isOpen, setIsOpen] = useState(false);
   const formType = useSelector((state) => state.form);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const courseList = useSelector((state) => state.course.courseList);
   const selectedCourses = useSelector((state) => state.course.selectedCourses);
+
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    }
+  }, [isAuthenticated, navigate])
 
   const [regData, setRegData] = useState({
     ...initialRegData,
@@ -85,13 +95,16 @@ export default function RegisterForm() {
             course: regData.course,
           }
         );
-        res.data.success
-          ? toast.success(res.data.message, {
-              duration: 3000,
-            })
-          : toast.error(res.data.message, {
-              duration: 3000,
-            });
+        if (res.data.success) {
+          toast.success(res.data.message, {
+            duration: 3000,
+          });
+          navigate("/login");
+        } else {
+          toast.error(res.data.message, {
+            duration: 3000,
+          });
+        }
       } catch (err) {
         const errorMsg = err.response?.data.message;
         toast.error(errorMsg, {
@@ -112,13 +125,16 @@ export default function RegisterForm() {
             course: regData.course,
           }
         );
-        res.data.success
-          ? toast.success(res.data.message, {
-              duration: 3000,
-            })
-          : toast.error(res.data.message, {
-              duration: 3000,
-            });
+        if (res.data.success) {
+          toast.success(res.data.message, {
+            duration: 3000,
+          });
+          navigate("/login");
+        } else {
+          toast.error(res.data.message, {
+            duration: 3000,
+          });
+        }
       } catch (err) {
         const errorMsg = err.response?.data.message;
         toast.error(errorMsg, {
