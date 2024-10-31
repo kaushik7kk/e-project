@@ -73,6 +73,7 @@ export default function LoginForm() {
 
         if (res.data.success) {
           localStorage.setItem("authToken", res.data.token);
+          localStorage.setItem("user", JSON.stringify(res.data.user))
           if (formType === "student") {
             localStorage.setItem("userType", "student");
           } else {
@@ -83,7 +84,8 @@ export default function LoginForm() {
           });
           dispatch(login({
             token: res.data.token,
-            userType: localStorage.getItem("userType")
+            userType: localStorage.getItem("userType"),
+            user: localStorage.getItem("user")
           }));
         } else {
           toast.error(res.data.message, {

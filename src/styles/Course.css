@@ -1,0 +1,40 @@
+.project-container {
+    width: 97vw;
+    height: 83vh;
+    /* border: 1px solid black; */
+}
+
+.side-actions {
+    width: 20vw;
+    height: 83vh;
+    /* border: 1px solid black; */
+}
+
+.action {
+    width: 15vw;
+    border-radius: 20px;
+    border: 1px solid rgb(7, 60, 106);
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.projects {
+    width: 70vw;
+    height: 83vh;
+    /* border: 1px solid black; */
+}
+
+.uni-heading {
+    font-size: 2rem;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+.course-heading {
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+
+.project-table {
+    border: 1px solid black;
+}

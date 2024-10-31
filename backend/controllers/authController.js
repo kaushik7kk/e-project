@@ -49,7 +49,7 @@ export const registerController = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.send(500).send({
+    res.status(500).send({
       success: false,
       message: "Error in registeration",
     });
@@ -75,17 +75,22 @@ export const registerTeacher = async (req, res) => {
     if (!university) {
       return res.send({ message: "University is Required" });
     }
-    if(!course.count()>0){
-        return res.send({message:"Course is Required"})
-    }
+    console.log("Number 1");
+    // if (!course.count() > 0) {
+    //   return res.send({ message: "Course is Required" });
+    // }
+    console.log("Number 1.5");
     const existingUser = await TeacherModel.findOne({ email });
     if (existingUser) {
-      return res.status(200).send({
+      return res.status(401).send({
         success: false,
         message: "User Already Exist",
       });
     }
+    console.log("Number 2");
     const hashedPassword = await hashPassword(password);
+    console.log("Phone");
+    console.log(phone);
     const user = await new TeacherModel({
       fname,
       lname,
@@ -95,6 +100,7 @@ export const registerTeacher = async (req, res) => {
       university,
       course,
     }).save();
+    console.log("Number 3");
     res.status(200).send({
       success: true,
       message: "User Registered",

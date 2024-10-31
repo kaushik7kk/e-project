@@ -1,0 +1,51 @@
+.dash-container {
+  /* border: 1px solid black; */
+  width: 80vw;
+  height: 75vh;
+}
+
+.university-heading {
+  /* border: 1px solid black; */
+  border-radius: 20px;
+  width: 70vw;
+  height: 10vh;
+  font-size: 2rem;
+  font-weight: 800;
+  text-decoration: underline;
+}
+
+.courses-container {
+  /* border: 1px solid black; */
+  width: 75vw;
+  height: 55vh;
+  border-radius: 20px;
+}
+
+.course-heading {
+  font-size: 2rem;
+}
+
+.course-couple {
+  /* border: 1px solid black; */
+  width: 65vw;
+  height: 25vh;
+}
+
+.course {
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.7);
+  border-radius: 20px;
+  width: 20vw;
+  height: 20vh;
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 500;
+  padding: 1rem;
+  padding-top: 2.3rem;
+  cursor: pointer;
+  transition: 0.5s all;
+  /* color: rgb(7, 60, 106); */
+}
+
+.course:active {
+  transform: scale(0.7);
+}
