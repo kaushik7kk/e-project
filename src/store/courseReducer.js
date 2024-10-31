@@ -7,7 +7,11 @@ export const getCourses = createAsyncThunk(
     const res = await axios.get(
       `http://localhost:8000/api/v1/course/get-courses?university=${university}`
     );
-    return res.data.courses;
+    if (res.data.success) {
+      return res.data.courses;
+    } else {
+      return [];
+    }
   }
 );
 

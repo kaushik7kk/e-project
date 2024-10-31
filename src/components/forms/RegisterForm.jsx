@@ -7,6 +7,19 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 
 export default function RegisterForm() {
+  // const initialRegData = useMemo(
+  //   () => ({
+  //     fname: "",
+  //     lname: "",
+  //     email: "",
+  //     password: "",
+  //     phone: "",
+  //     university: "IPU",
+  //   }),
+  //   []
+  // );
+  
+  const formType = useSelector((state) => state.form);
   const initialRegData = useMemo(
     () => ({
       fname: "",
@@ -15,54 +28,60 @@ export default function RegisterForm() {
       password: "",
       phone: "",
       university: "IPU",
+      course: formType === "student" ? "MCA" : [],
     }),
-    []
+    [formType]
   );
+
+  const [regData, setRegData] = useState(initialRegData);
+
   const [isOpen, setIsOpen] = useState(false);
-  const formType = useSelector((state) => state.form);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const courseList = useSelector((state) => state.course.courseList);
   const selectedCourses = useSelector((state) => state.course.selectedCourses);
 
-  const isAuthenticated = useSelector(state => state.auth.isAuthenticated);
+  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
 
   useEffect(() => {
     if (isAuthenticated) {
       navigate("/dashboard");
     }
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, navigate]);
 
-  const [regData, setRegData] = useState({
-    ...initialRegData,
-    course: formType === "student" ? "MCA" : [],
-  });
+  // const [regData, setRegData] = useState({
+  //   ...initialRegData,
+  //   course: formType === "student" ? "MCA" : [],
+  // });
+
+  useEffect(() => {
+    // if (formType === "student") {
+    //   setRegData({
+    //     ...initialRegData,
+    //     course: "MCA",
+    //   });
+    // } else {
+    //   setRegData({
+    //     ...initialRegData,
+    //     course: [],
+    //   });
+    // }
+    setRegData(initialRegData);
+  }, [formType, initialRegData]);
 
   useEffect(() => {
     dispatch(getCourses(regData.university));
   }, [dispatch, regData.university]);
 
   useEffect(() => {
-    setRegData((prev) => ({
-      ...prev,
-      course: selectedCourses,
-    }));
-  }, [selectedCourses]);
-
-  useEffect(() => {
-    if (formType === "student") {
-      setRegData({
-        ...initialRegData,
-        course: "MCA",
-      });
-    } else {
-      setRegData({
-        ...initialRegData,
-        course: [],
-      });
+    if (formType !== "student") {
+      setRegData((prev) => ({
+        ...prev,
+        course: selectedCourses,
+      }));
     }
-  }, [formType, initialRegData]);
+  }, [formType, selectedCourses]);
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -83,6 +102,7 @@ export default function RegisterForm() {
 
     if (formType === "student") {
       try {
+        console.log(regData.course);
         const res = await axios.post(
           "http://localhost:8000/api/v1/auth/register/student",
           {

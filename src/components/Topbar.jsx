@@ -1,19 +1,24 @@
 import React from "react";
 import "../styles/Topbar.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../store/authReducer";
+import { clearUserData, tempLogout } from "../store/authReducer";
 import toast from "react-hot-toast";
 
 export default function Topbar() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const logoutCilckHandler = () => {
-    dispatch(logout());
+    dispatch(tempLogout());
+    navigate("/");
     toast.success("Logged out successfully", {
       duration: 3000,
     });
+    setTimeout(() => {
+      dispatch(clearUserData()); // Clear user data after navigation
+    }, 0);
   };
 
   if (isAuthenticated) {
