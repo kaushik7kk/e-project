@@ -17,8 +17,8 @@ export default function Topbar() {
       duration: 3000,
     });
     setTimeout(() => {
-      dispatch(clearUserData()); // Clear user data after navigation
-    }, 0);
+      dispatch(clearUserData());
+    }, 100);
   };
 
   if (isAuthenticated) {
