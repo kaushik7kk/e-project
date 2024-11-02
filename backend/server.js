@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cors from "cors";
 import authRoute from "./Routes/authRoutes.js";
 import courseRoute from "./Routes/courseRoutes.js";
+import projectRoute from "./Routes/projectRoutes.js"
 dotenv.config();  
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json())
 
 app.use('/api/v1/auth',authRoute)
 app.use('/api/v1/course',courseRoute)
+app.use('/api/v1/projects', projectRoute);
 
 app.listen(PORT, () => {
   console.log(

@@ -31,6 +31,10 @@ const projectSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Teacher",
   },
+  course: {
+    type: String,
+    required: true,
+  }
 });
 
 export default mongoose.model("project", projectSchema);

@@ -37,22 +37,19 @@ export const getUsersByCourseController = async (req, res) => {
       course,
     });
 
-    const studentProjectData = users.map((user) => {
-      const projectDetails = ProjectModel.findOne({
-        members: {
-          $elemMatch : {
-            user: user._id
-          }
-        }
+    const studentProjectData = await Promise.all(
+      users.map(async (user) => {
+        const projectDetails = await ProjectModel.findOne({
+          members: { $elemMatch: { user: user._id } },
+        });
+        return {
+          sname: `${user.fname} ${user.lname}`,
+          userId: user._id,
+          projectId: projectDetails ? projectDetails._id : null,
+          ptitle: projectDetails ? projectDetails.title : null,
+        };
       })
-
-      return {
-        sname: `${user.fname} ${user.lname}`,
-        userId: user._id,
-        projectId: projectDetails && projectDetails._id,
-        ptitle: projectDetails && `${projectDetails.title}`
-      }
-    })
+    );
 
     if (users) {
       res.status(200).json({

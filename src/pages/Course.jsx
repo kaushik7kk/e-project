@@ -16,6 +16,7 @@ export default function Course() {
   const roles = ["Developer", "Designer", "Leader", "Tester"];
   const [numMembers, setNumMembers] = useState(1);
   const [entries, setEntries] = useState([{ userId: "", role: "" }]);
+  const [unassignedStudents, setUnassignedStudents] = useState([]);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -24,29 +25,48 @@ export default function Course() {
   }, [isAuthenticated, navigate]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const fetchStudentsAndProjects = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:8000/api/v1/course/get-users/${course}`
-        );
+        const [usersRes, projectsRes] = await Promise.all([
+          axios.get(`http://localhost:8000/api/v1/course/get-users/${course}`),
+          axios.get(
+            `http://localhost:8000/api/v1/projects/get-projects/${course}`
+          ),
+        ]);
 
-        if (res.data.success) {
-          setStudents(res.data.studentProjectData);
+        if (usersRes.data.success && projectsRes.data.success) {
+          const allStudents = usersRes.data.studentProjectData;
+          const projects = projectsRes.data.projects;
+
+          const assignedStudentIds = new Set();
+          projects.forEach((project) => {
+            project.members.forEach((member) => {
+              assignedStudentIds.add(member.user.toString());
+            });
+          });
+
+          const availableStudents = allStudents.filter(
+            (student) => !assignedStudentIds.has(student.userId.toString())
+          );
+
+          setStudents(allStudents);
+          setUnassignedStudents(availableStudents);
+          console.log("Unassigned:", unassignedStudents);
         } else {
-          console.error(res.data.message);
+          console.error(usersRes.data.message || projectsRes.data.message);
         }
       } catch (err) {
         let errMsg = err.response?.data.message;
         console.log(errMsg);
       }
     };
-    fetchUsers();
-  }, [course]);
+    fetchStudentsAndProjects();
+  }, [course, unassignedStudents]);
 
   const handleNumMembersChange = (e) => {
     const count = parseInt(e.target.value, 10);
     setNumMembers(count);
-    setEntries(Array(count).fill({ userId: '', role: '' }));
+    setEntries(Array(count).fill({ userId: "", role: "" }));
   };
 
   const handleChange = (index, field, value) => {
@@ -57,13 +77,44 @@ export default function Course() {
   };
 
   const availableStudents = (selectedIndex) => {
-    const selectedUserIds = entries.map((entry, index) => index !== selectedIndex && entry.userId);
-    return students.filter(student => !selectedUserIds.includes(student.userId));
+    const selectedUserIds = entries.map(
+      (entry, index) => index !== selectedIndex && entry.userId
+    );
+
+    const filteredStudents = unassignedStudents.filter(
+      (student) => !selectedUserIds.includes(student.userId)
+    );
+
+    return filteredStudents;
   };
 
   const availableRoles = (selectedIndex) => {
-    const selectedRoles = entries.map((entry, index) => index !== selectedIndex && entry.role);
-    return roles.filter(role => !selectedRoles.includes(role));
+    const selectedRoles = entries.map(
+      (entry, index) => index !== selectedIndex && entry.role
+    );
+    return roles.filter((role) => !selectedRoles.includes(role));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const projectData = {
+      title: document.getElementById("ptitle").value,
+      stack: document.getElementById("pstack").value,
+      numOfMembers: numMembers,
+      members: entries,
+      mentor: document.getElementById("pmentor").value,
+      course: course,
+    };
+
+    try {
+        const res = await axios.post("http://localhost:8000/api/v1/projects/add-project", projectData);
+
+        if (res.data.success) {
+            
+        }
+    } catch(err) {
+
+    }
   };
 
   const studentCourse = (
@@ -123,7 +174,7 @@ export default function Course() {
         </div>
       </div>
       <div className="blur-bg"></div>
-      <form className="addProject flex flex-col p-6">
+      <form onSubmit={handleSubmit} className="addProject flex flex-col p-6">
         <div className="addHeader flex justify-between mb-7">
           <div className="formHeading">Add Project</div>
           <div className="close-icon">X</div>
@@ -148,43 +199,47 @@ export default function Course() {
             onChange={handleNumMembersChange}
           />
         </div>
-      <div className="dropdowns flex flex-col mt-5">
-        <label>Add member</label>
-        {entries.map((entry, index) => (
-          <div key={index} className="entry flex justify-between mt-2">
-            <select
-              value={entry.userId}
-              onChange={(e) => handleChange(index, 'userId', e.target.value)}
-            >
-              <option value="">Select a student</option>
-              {availableStudents(index).map((student) => (
-                <option key={student.userId} value={student.userId}>
-                  {student.sname}
-                </option>
-              ))}
-            </select>
+        <div className="dropdowns flex flex-col mt-5">
+          <label>Add member</label>
+          {entries.map((entry, index) => (
+            <div key={index} className="entry flex justify-between mt-2">
+              <select
+                value={entry.userId}
+                onChange={(e) => handleChange(index, "userId", e.target.value)}
+              >
+                {" "}
+                <option value="">Select a student</option>{" "}
+                {availableStudents(index).map((student) => (
+                  <option key={student.userId} value={student.userId}>
+                    {" "}
+                    {student.sname}{" "}
+                  </option>
+                ))}{" "}
+              </select>
 
-            <select
-              value={entry.role}
-              onChange={(e) => handleChange(index, 'role', e.target.value)}
-            >
-              <option value="">Select a role</option>
-              {availableRoles(index).map((role) => (
-                <option key={role} value={role}>
-                  {role}
-                </option>
-              ))}
-            </select>
-          </div>
-        ))}
-      </div>
-      <div className="add-input-group flex justify-between mt-5">
+              <select
+                value={entry.role}
+                onChange={(e) => handleChange(index, "role", e.target.value)}
+              >
+                <option value="">Select a role</option>
+                {availableRoles(index).map((role) => (
+                  <option key={role} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ))}
+        </div>
+        <div className="add-input-group flex justify-between mt-5">
           <label htmlFor="pmentor">Project Mentor:</label>
           <select name="pmentor" id="pmentor">
             <option value="">Az By</option>
           </select>
         </div>
-        <button className="pSubmit" type="submit">Add Project</button>
+        <button className="pSubmit" type="submit">
+          Add Project
+        </button>
       </form>
     </>
   );
