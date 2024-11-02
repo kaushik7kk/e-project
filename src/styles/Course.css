@@ -1,40 +1,167 @@
 .project-container {
-    width: 97vw;
-    height: 83vh;
-    /* border: 1px solid black; */
+  width: 97vw;
+  height: 83vh;
+  /* border: 1px solid black; */
+  z-index: 10;
 }
 
 .side-actions {
-    width: 20vw;
-    height: 83vh;
-    /* border: 1px solid black; */
+  width: 20vw;
+  height: 83vh;
+  /* border: 1px solid black; */
 }
 
 .action {
-    width: 15vw;
-    border-radius: 20px;
-    border: 1px solid rgb(7, 60, 106);
-    font-size: 1.1rem;
-    font-weight: 600;
+  width: 15vw;
+  border-radius: 20px;
+  border: 1px solid rgb(7, 60, 106);
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .projects {
-    width: 70vw;
-    height: 83vh;
-    /* border: 1px solid black; */
+  width: 75vw;
+  height: 83vh;
+  /* border: 1px solid black; */
 }
 
 .uni-heading {
-    font-size: 2rem;
-    font-weight: 700;
-    text-decoration: underline;
+  font-size: 2rem;
+  font-weight: 700;
+  text-decoration: underline;
 }
 
 .course-heading {
-    font-size: 1.7rem;
-    font-weight: 600;
+  font-size: 1.7rem;
+  font-weight: 600;
 }
 
-.project-table {
-    border: 1px solid black;
+.action {
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.action:active {
+  transform: scale(0.7);
+}
+
+.student-table {
+  width: 60vw;
+  height: 65vh;
+}
+
+.student-table .table-heading {
+  width: 57vw;
+  height: 8vh;
+  border-bottom: 1px solid black;
+}
+
+.student-table .table-heading div {
+  width: 18vw;
+  height: 6vh;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.student-table .table-heading div:first-of-type {
+  width: 5vw;
+  border-left: none;
+  border-right: 1px solid black;
+}
+
+.student-table .table-heading div:last-of-type {
+  border-right: none;
+  border-left: 1px solid black;
+}
+
+.student-data {
+  width: 57vw;
+  height: 55vh;
+  overflow-y: scroll;
+  /* border: 1px solid black; */
+}
+.student-data::-webkit-scrollbar {
+  display: none;
+}
+
+.student-data .data-row {
+  width: 57vw;
+  height: 8vh;
+}
+
+.student-data .data-row div {
+  width: 18vw;
+  height: 6vh;
+  /* font-size: 1.2rem; */
+  font-weight: 400;
+  padding-top: 0.5rem;
+}
+
+.student-data .data-row div:first-of-type {
+  width: 5vw;
+  border-right: 1px solid black;
+}
+
+.student-data .data-row div:last-of-type {
+  border-left: 1px solid black;
+}
+
+.blur-bg {
+  position: fixed;
+  top: 0%;
+  width: 100vw;
+  height: 90vh;
+  z-index: 90;
+  background-color: rgba(250, 235, 215, 0.533);
+  filter: blur(50px);
+}
+
+.addProject {
+  position: fixed;
+  top: 5%;
+  left: 32%;
+  z-index: 91;
+  width: 40vw;
+  height: 80vh;
+  background-color: beige;
+  border-radius: 20px;
+}
+
+.addHeader {
+  width: 36vw;
+  height: 7vh;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.close-icon {
+  cursor: pointer;
+}
+
+.add-input-group label {
+  font-weight: 500;
+}
+
+.add-input-group input {
+  width: 20vw;
+  font-weight: 400;
+  padding: 0.3rem;
+  text-align: center;
+}
+
+.dropdowns label {
+  font-weight: 500;
+}
+
+.pSubmit {
+  margin: 0 auto;
+  border-radius: 20px;
+  width: 10vw;
+  padding: 1.3rem;
+  border: 1px solid rgb(253, 202, 202);
+  transition: all 0.5s;
+}
+
+.pSubmit:active {
+  transform: scale(0.7);
 }
