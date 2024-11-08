@@ -114,9 +114,11 @@
   z-index: 90;
   background-color: rgba(250, 235, 215, 0.533);
   filter: blur(50px);
+  display: none;
 }
 
 .addProject {
+  display: none;
   position: fixed;
   top: 5%;
   left: 32%;
