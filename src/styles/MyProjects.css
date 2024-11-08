@@ -1,0 +1,23 @@
+.my-project-container {
+  margin-top: 10vh;
+  width: 60vw;
+  height: 60vh;
+  /* border: 1px solid black; */
+}
+
+.mproject-heading {
+  font-weight: 700;
+  font-size: 1.4rem;
+  border-bottom: 1px solid black;
+  padding: 1rem;
+}
+
+.mproject-content {
+  margin-top: 3vh;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.mproject-content .mproject-title {
+  cursor: pointer;
+}

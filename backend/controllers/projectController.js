@@ -29,14 +29,57 @@ export const getAllProjectsByCourseController = async (req, res) => {
 
 export const addProjectController = async (req, res) => {
   try {
-    const {title, stack, numOfMembers, members, mentor, course} = await req.body();
+    const { title, stack, numOfMembers, members, mentor, course } = req.body;
 
-    
+    const formattedMembers = members.map((member) => ({
+      user: member.userId,
+      role: member.role,
+    }));
+    const newProject = await new ProjectModel({
+      title,
+      stack,
+      numOfMembers,
+      members: formattedMembers,
+      mentor,
+      course,
+    }).save();
 
-  } catch(err) {
+    res.status(200).send({
+      success: true,
+      message: "Project added successfully",
+    });
+  } catch (err) {
     res.status(500).send({
       success: false,
-      message: "Error adding project"
-    })
+      message: `Error adding project ${err}`,
+    });
   }
-}
+};
+
+export const getProjectsByIdController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const projects = await ProjectModel.find({
+      members: { $elemMatch: { user: id } },
+    });
+    if (projects) {
+      res.status(200).send({
+        success: true,
+        message: "Projects found",
+        projects,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message: "No projects found",
+        projects: [],
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: `Error getting projects by id: ${error}`,
+    });
+  }
+};

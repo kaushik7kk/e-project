@@ -22,7 +22,7 @@ const projectSchema = new Schema({
       },
       role: {
         type: String,
-        enum: ["Developer", "Designer", "Leader", "Tester"],
+        enum: ["Developer", "Designer", "Leader", "Tester", "Asst. Developer"],
         required: true,
       },
     },
@@ -34,7 +34,19 @@ const projectSchema = new Schema({
   course: {
     type: String,
     required: true,
-  }
+  },
+  status: {
+    type: String,
+    enum: [
+      "Initiated",
+      "Idea approved",
+      "On time",
+      "Changes suggested",
+      "Completed",
+    ],
+    default: "Initiated",
+    required: true,
+  },
 });
 
 export default mongoose.model("project", projectSchema);

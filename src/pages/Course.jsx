@@ -4,6 +4,7 @@ import Topbar from "../components/Topbar";
 import "../styles/Course.css";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import toast from "react-hot-toast";
 
 export default function Course() {
   const navigate = useNavigate();
@@ -11,9 +12,19 @@ export default function Course() {
   const userData = useSelector((state) => state.auth.user);
   const { course, uni } = useParams();
   const [students, setStudents] = useState([]);
+  const [teachers, setTeachers] = useState([]);
   const userType = useSelector((state) => state.auth.userType);
 
-  const roles = ["Developer", "Designer", "Leader", "Tester"];
+  const blurBg = document.querySelector(".blur-bg");
+  const projectForm = document.querySelector(".addProject");
+
+  const roles = [
+    "Developer",
+    "Designer",
+    "Team Lead",
+    "Tester",
+    "Asst. Developer",
+  ];
   const [numMembers, setNumMembers] = useState(1);
   const [entries, setEntries] = useState([{ userId: "", role: "" }]);
   const [unassignedStudents, setUnassignedStudents] = useState([]);
@@ -27,16 +38,24 @@ export default function Course() {
   useEffect(() => {
     const fetchStudentsAndProjects = async () => {
       try {
-        const [usersRes, projectsRes] = await Promise.all([
+        const [usersRes, projectsRes, teachersRes] = await Promise.all([
           axios.get(`http://localhost:8000/api/v1/course/get-users/${course}`),
           axios.get(
             `http://localhost:8000/api/v1/projects/get-projects/${course}`
           ),
+          axios.get(
+            `http://localhost:8000/api/v1/teachers/get-teachers/${course}`
+          ),
         ]);
 
-        if (usersRes.data.success && projectsRes.data.success) {
+        if (
+          usersRes.data.success &&
+          projectsRes.data.success &&
+          teachersRes.data.success
+        ) {
           const allStudents = usersRes.data.studentProjectData;
           const projects = projectsRes.data.projects;
+          const allTeachers = teachersRes.data.teachers;
 
           const assignedStudentIds = new Set();
           projects.forEach((project) => {
@@ -50,6 +69,8 @@ export default function Course() {
           );
 
           setStudents(allStudents);
+          setTeachers(allTeachers);
+          console.log(teachers);
           setUnassignedStudents(availableStudents);
           console.log("Unassigned:", unassignedStudents);
         } else {
@@ -61,7 +82,7 @@ export default function Course() {
       }
     };
     fetchStudentsAndProjects();
-  }, [course, unassignedStudents]);
+  }, [course]);
 
   const handleNumMembersChange = (e) => {
     const count = parseInt(e.target.value, 10);
@@ -95,6 +116,16 @@ export default function Course() {
     return roles.filter((role) => !selectedRoles.includes(role));
   };
 
+  const openForm = () => {
+    blurBg.style.display = "flex";
+    projectForm.style.display = "flex";
+  };
+
+  const closeForm = () => {
+    blurBg.style.display = "none";
+    projectForm.style.display = "none";
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const projectData = {
@@ -107,15 +138,32 @@ export default function Course() {
     };
 
     try {
-        const res = await axios.post("http://localhost:8000/api/v1/projects/add-project", projectData);
+      const res = await axios.post(
+        "http://localhost:8000/api/v1/projects/add-project",
+        projectData
+      );
 
-        if (res.data.success) {
-            
-        }
-    } catch(err) {
-
+      if (res.data.success) {
+        toast.success("Project added successfully", {
+          duration: 3000,
+        });
+        closeForm();
+      }
+    } catch (err) {
+      const errorMsg = err.response?.data.message;
+      toast.error(errorMsg, {
+        duration: 3000,
+      });
     }
   };
+
+  const handleMyProjectsClick = (e) => {
+    navigate(`/my-projects`);
+  };
+
+  const handleViewAllProjects = e => {
+    navigate(`/view-projects/${course}`)
+  }
 
   const studentCourse = (
     <>
@@ -124,20 +172,28 @@ export default function Course() {
         <div className="side-actions flex flex-col items-center p-10 text-center">
           {course === userData.course ? (
             <>
-              <div id="add-project" className="action p-5">
+              <div id="add-project" className="action p-5" onClick={openForm}>
                 Add a project
               </div>
               <div id="delete-project" className="action mt-5 p-5">
                 Delete a project
               </div>
-              <div id="my-projects" className="action mt-5 p-5">
+              <div
+                id="my-projects"
+                className="action mt-5 p-5"
+                onClick={handleMyProjectsClick}
+              >
                 My projects
               </div>
             </>
           ) : (
             <></>
           )}
-          <div id="view-projects" className="action mt-5 p-5">
+          <div
+            id="view-projects"
+            className="action mt-5 p-5"
+            onClick={handleViewAllProjects}
+          >
             View all projects
           </div>
         </div>
@@ -177,7 +233,9 @@ export default function Course() {
       <form onSubmit={handleSubmit} className="addProject flex flex-col p-6">
         <div className="addHeader flex justify-between mb-7">
           <div className="formHeading">Add Project</div>
-          <div className="close-icon">X</div>
+          <div className="close-icon" onClick={closeForm}>
+            X
+          </div>
         </div>
         <div className="add-input-group flex justify-between">
           <label htmlFor="ptitle">Project Title:</label>
@@ -234,7 +292,12 @@ export default function Course() {
         <div className="add-input-group flex justify-between mt-5">
           <label htmlFor="pmentor">Project Mentor:</label>
           <select name="pmentor" id="pmentor">
-            <option value="">Az By</option>
+            {teachers.map((teacher) => (
+              <option
+                key={teacher._id}
+                value={teacher._id}
+              >{`${teacher.fname} ${teacher.lname}`}</option>
+            ))}
           </select>
         </div>
         <button className="pSubmit" type="submit">
