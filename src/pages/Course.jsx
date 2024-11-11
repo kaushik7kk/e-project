@@ -323,7 +323,7 @@ export default function Course() {
           ) : (
             <></>
           )}
-          <div id="view-projects" className="action mt-5 p-5">
+          <div id="view-projects" className="action mt-5 p-5" onClick={handleViewAllProjects}>
             View all projects
           </div>
         </div>

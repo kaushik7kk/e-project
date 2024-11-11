@@ -49,6 +49,7 @@ export default function MyProjects() {
         <div className="mproject-heading flex justify-around">
           <div className="mproject-title">Project Title</div>
           <div className="mproject-stack">Project Stack</div>
+          <div className="mproject-stack">Project Status</div>
         </div>
         <div className="mproject-content flex flex-col justify-between">
           {projects.map((project) => (
@@ -56,6 +57,7 @@ export default function MyProjects() {
               <div className="project-row flex justify-around">
                 <div className="mproject-title">{project.title}</div>
                 <div className="mproject-stack">{project.stack}</div>
+                <div className="mproject-stack">{project.status}</div>
               </div>
             </>
           ))}

@@ -83,3 +83,50 @@ export const getProjectsByIdController = async (req, res) => {
     });
   }
 };
+
+export const deleteProjectController = async(req,res)=>{
+  try {
+      const {id}=req.params
+      const response = await ProjectModel.findByIdAndDelete({
+        _id: id
+      })
+      if (response) {
+        res.status(200).send({
+          success: true,
+          message: "Project Deleted successfully"
+        })
+      }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error deleting project"
+    })
+  }
+}
+
+export const getProjectsByTeacherController = async (req, res) => {
+  try {
+    const {teacherid} = req.params;
+    const projects = await ProjectModel.find({
+      mentor: teacherid }
+    );
+    if (projects) {
+      res.status(200).send({
+        success: true,
+        message: "Projects found",
+        projects
+      })
+    } else {
+      res.status(404).send({
+        success: false,
+        message: "No projects found",
+        projects: []
+      })
+    }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error getting projects by teacher"
+    })
+  }
+}
