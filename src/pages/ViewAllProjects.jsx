@@ -41,6 +41,10 @@ export default function ViewAllProjects() {
     fetchProjectByCourse();
   });
 
+  const handleProjectClick = (projectId) => {
+    navigate(`/view-project/${projectId}`);
+  };
+
   return (
     <>
       <Topbar />
@@ -50,11 +54,16 @@ export default function ViewAllProjects() {
           <div className="mproject-stack">Project Stack</div>
           <div className="mproject-stack">No. of members</div>
         </div>
-        <div className="mproject-content flex flex-col justify-between">
-          {allProjects.map((project) => (
+        <div className="mproject-content flex flex-col mt-3">
+          {allProjects.map((project, index) => (
             <>
-              <div className="project-row flex justify-around">
-                <div className="mproject-title">{project.title}</div>
+              <div className="project-row flex justify-around mt-2" key={index}>
+                <div
+                  className="mproject-title"
+                  onClick={() => handleProjectClick(project._id)}
+                >
+                  {project.title}
+                </div>
                 <div className="mproject-stack">{project.stack}</div>
                 <div className="mproject-numMem">{project.numOfMembers}</div>
               </div>

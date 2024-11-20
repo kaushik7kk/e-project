@@ -42,6 +42,10 @@ export default function MyProjects() {
     }
   }, [userData]);
 
+  const handleProjectClick = (projectId) => {
+    navigate(`/view-project/${projectId}`);
+  };
+
   return (
     <>
       <Topbar />
@@ -51,11 +55,19 @@ export default function MyProjects() {
           <div className="mproject-stack">Project Stack</div>
           <div className="mproject-stack">Project Status</div>
         </div>
-        <div className="mproject-content flex flex-col justify-between">
+        <div className="mproject-content flex flex-col mt-3">
           {projects.map((project) => (
             <>
-              <div className="project-row flex justify-around">
-                <div className="mproject-title">{project.title}</div>
+              <div
+                className="project-row flex justify-around mt-2"
+                key={project._id}
+              >
+                <div
+                  className="mproject-title"
+                  onClick={() => handleProjectClick(project._id)}
+                >
+                  {project.title}
+                </div>
                 <div className="mproject-stack">{project.stack}</div>
                 <div className="mproject-stack">{project.status}</div>
               </div>

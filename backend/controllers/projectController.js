@@ -1,3 +1,4 @@
+import FileModel from "../models/FileModel.js";
 import ProjectModel from "../models/ProjectModel.js";
 
 export const getAllProjectsByCourseController = async (req, res) => {
@@ -84,49 +85,103 @@ export const getProjectsByIdController = async (req, res) => {
   }
 };
 
-export const deleteProjectController = async(req,res)=>{
+export const deleteProjectController = async (req, res) => {
   try {
-      const {id}=req.params
-      const response = await ProjectModel.findByIdAndDelete({
-        _id: id
-      })
-      if (response) {
-        res.status(200).send({
-          success: true,
-          message: "Project Deleted successfully"
-        })
-      }
-  } catch (error) {
-    res.status(500).send({
-      success: false,
-      message: "Error deleting project"
-    })
-  }
-}
-
-export const getProjectsByTeacherController = async (req, res) => {
-  try {
-    const {teacherid} = req.params;
-    const projects = await ProjectModel.find({
-      mentor: teacherid }
-    );
-    if (projects) {
+    const { id } = req.params;
+    const response = await ProjectModel.findByIdAndDelete({
+      _id: id,
+    });
+    if (response) {
       res.status(200).send({
         success: true,
-        message: "Projects found",
-        projects
-      })
-    } else {
-      res.status(404).send({
-        success: false,
-        message: "No projects found",
-        projects: []
-      })
+        message: "Project Deleted successfully",
+      });
     }
   } catch (error) {
     res.status(500).send({
       success: false,
-      message: "Error getting projects by teacher"
-    })
+      message: "Error deleting project",
+    });
   }
-}
+};
+
+export const getProjectsByTeacherController = async (req, res) => {
+  try {
+    const { teacherid } = req.params;
+    const projects = await ProjectModel.find({
+      mentor: teacherid,
+    });
+    if (projects) {
+      res.status(200).send({
+        success: true,
+        message: "Projects found",
+        projects,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message: "No projects found",
+        projects: [],
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error getting projects by teacher",
+    });
+  }
+};
+
+export const getProjectDetailsByIdController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const project = await ProjectModel.findOne({
+      _id: id,
+    });
+    if (project) {
+      res.status(200).send({
+        success: true,
+        message: "Project found",
+        project,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message: "No project found",
+        project: {},
+      });
+    }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error getting project",
+    });
+  }
+};
+
+export const getFilesByProjectIdController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const project = await ProjectModel.findById(id);
+
+    if (project) {
+      const fileIds = project.files;
+
+      const files = await FileModel.find({ _id: { $in: fileIds } });
+
+      res.status(200).send({
+        success: true,
+        message: "Files found",
+        files,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message: "Project not found",
+        files: [],
+      });
+    }
+  } catch (error) {}
+};

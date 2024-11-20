@@ -6,6 +6,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import Course from "./pages/Course.jsx";
 import MyProjects from "./pages/MyProjects.jsx";
 import ViewAllProjects from "./pages/ViewAllProjects.jsx";
+import Project from "./pages/Project.jsx";
 function App() {
   return (
     <>
@@ -18,6 +19,7 @@ function App() {
           <Route path="/:uni/:course" element={<Course />} />
           <Route path="/my-projects" element={<MyProjects />} />
           <Route path="/view-projects/:course" element={<ViewAllProjects />} />
+          <Route path="/view-project/:projectId" element={<Project />} />
         </Routes>
       </Router>
     </>

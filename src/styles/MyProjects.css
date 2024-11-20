@@ -10,12 +10,53 @@
   font-size: 1.4rem;
   border-bottom: 1px solid black;
   padding: 1rem;
+  width: 57vw;
+  text-align: center;
+}
+
+.mproject-heading div {
+  width: 18vw;
+}
+
+.mproject-heading div:first-of-type {
+  border-right: 1px solid black;
+}
+
+.mproject-heading div:last-of-type {
+  border-left: 1px solid black;
 }
 
 .mproject-content {
-  margin-top: 3vh;
+  width: 57vw;
+  height: 55vh;
+  overflow-y: scroll;
+  /* border: 1px solid black; */
+}
+.mproject-content::-webkit-scrollbar {
+  display: none;
+}
+
+.mproject-content .project-row {
+  width: 57vw;
+  /* height: 8vh; */
+}
+
+.mproject-content .project-row div {
+  width: 18vw;
+  /* height: 6vh; */
   font-size: 1.2rem;
   font-weight: 500;
+  padding-top: 0.5rem;
+  text-align: center;
+}
+
+.mproject-content .project-row div:first-of-type {
+  
+  border-right: 1px solid black;
+}
+
+.mproject-content .project-row div:last-of-type {
+  border-left: 1px solid black;
 }
 
 .mproject-content .mproject-title {

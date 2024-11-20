@@ -47,6 +47,8 @@ const projectSchema = new Schema({
     default: "Initiated",
     required: true,
   },
+  files: [{ type: mongoose.Schema.Types.ObjectId, ref: "File" }],
+  folders: [{ type: mongoose.Schema.Types.ObjectId, ref: "Folder" }],
 });
 
 export default mongoose.model("project", projectSchema);
