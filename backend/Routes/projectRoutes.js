@@ -4,6 +4,7 @@ import {
   deleteProjectController,
   getAllProjectsByCourseController,
   getFilesByProjectIdController,
+  getFoldersByProjectIdController,
   getProjectDetailsByIdController,
   getProjectsByIdController,
 } from "../controllers/projectController.js";
@@ -16,5 +17,6 @@ router.get("/get-my-projects/:id", getProjectsByIdController);
 router.delete("/delete-project/:id", deleteProjectController);
 router.get("/get-project-details/:id", getProjectDetailsByIdController);
 router.get("/get-files/:id", getFilesByProjectIdController);
+router.get("/get-folders/:id", getFoldersByProjectIdController);
 
 export default router;

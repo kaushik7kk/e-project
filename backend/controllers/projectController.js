@@ -1,4 +1,5 @@
 import FileModel from "../models/FileModel.js";
+import FolderModel from "../models/FolderModel.js";
 import ProjectModel from "../models/ProjectModel.js";
 
 export const getAllProjectsByCourseController = async (req, res) => {
@@ -184,4 +185,34 @@ export const getFilesByProjectIdController = async (req, res) => {
       });
     }
   } catch (error) {}
+};
+
+export const getFoldersByProjectIdController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const project = await ProjectModel.findById(id);
+    if (project) {
+      const folderIds = project.folders;
+
+      const folders = await FolderModel.find({ _id: { $in: folderIds } });
+
+      res.status(200).send({
+        success: true,
+        message: "Folders found",
+        folders,
+      });
+    } else {
+      res.status(404).send({
+        success: false,
+        message: "Project not found",
+        folders: []
+      })
+    }
+  } catch (error) {
+    res.status(500).send({
+      success: false,
+      message: "Error finding folders"
+    })
+  }
 };

@@ -11,6 +11,7 @@ export default function Project() {
   const { projectId } = useParams();
   const [project, setProject] = useState({});
   const [files, setFiles] = useState([]);
+  const [folders, setFolders] = useState([]);
 
   const blurBg = document.querySelector(".blur-bg-project");
   const addFileDialog = document.querySelector(".addFileDialog");
@@ -74,8 +75,28 @@ export default function Project() {
       }
     };
 
+    const fetchFoldersByProject = async () => {
+      try {
+        const res = await axios.get(
+          `http://localhost:8000/api/v1/projects/get-folders/${projectId}`
+        );
+
+        if (res.data.success) {
+          setFolders(res.data.folders);
+        } else {
+          setFolders([]);
+        }
+      } catch (err) {
+        const errorMsg = err.response?.data.message;
+        toast.error(errorMsg, {
+          duration: 3000,
+        });
+      }
+    };
+
     fetchProjectById();
     fetchFilesByProject();
+    fetchFoldersByProject();
   });
 
   const addFileSubmitHandler = async (e) => {
@@ -130,7 +151,7 @@ export default function Project() {
 
     const folderUpload = document.querySelector("#folderUpload");
     const folderName = folderUpload.value;
-    
+
     try {
       const res = await axios.post(
         `http://localhost:8000/api/v1/upload/add-folder`,
@@ -144,6 +165,7 @@ export default function Project() {
         toast.success(res.data.message, {
           duration: 3000,
         });
+        folderUpload.value = "";
       } else {
         toast.error(res.data.message, {
           duration: 3000,
@@ -179,6 +201,14 @@ export default function Project() {
             </div>
           </div>
           <div className="file-list mx-auto mt-4 p-4">
+            {folders.map((folder, index) => (
+              <>
+                <div className="folder-list-item" key={index}>
+                  <FontAwesomeIcon icon={faFolder} className="mr-4" />
+                  {folder.name}
+                </div>
+              </>
+            ))}
             {files.map((file, index) => (
               <>
                 <div className="file-list-item" key={index}>
