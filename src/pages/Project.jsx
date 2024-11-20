@@ -101,7 +101,7 @@ export default function Project() {
     fetchProjectById();
     fetchFilesByProject();
     fetchFoldersByProject();
-  });
+  }, [projectId]);
 
   const addFileSubmitHandler = async (e) => {
     e.preventDefault();
@@ -185,36 +185,6 @@ export default function Project() {
     closeUploadFolderForm();
   };
 
-  const folderStates = {}; // Track the state of each folder
-
-  function expandFolderHandler(e) {
-    const folderItem = e.currentTarget.closest(".folder-list-item");
-    const index = folderItem.getAttribute("key"); // Use key or unique identifier
-    const folderContent = folderItem.querySelector(".folder-content");
-    const chevronIcon = folderItem.querySelector(".rotate-icon");
-    const addFileToFolder = folderItem.querySelector(".addFileToFolder");
-
-    if (!folderStates[index]) {
-      folderStates[index] = { isExpanded: false };
-    }
-
-    folderStates[index].isExpanded = !folderStates[index].isExpanded;
-
-    if (folderStates[index].isExpanded) {
-      folderContent.classList.add("expanded");
-      chevronIcon.classList.add("expanded");
-      addFileToFolder.style.display = "block";
-    } else {
-      folderContent.classList.remove("expanded");
-      chevronIcon.classList.remove("expanded");
-      addFileToFolder.style.display = "none";
-    }
-  }
-
-  document
-    .querySelectorAll(".addFileToFolder")
-    .forEach((item) => (item.style.display = "none"));
-
   return (
     <>
       <Topbar />
@@ -241,26 +211,10 @@ export default function Project() {
                   className="folder-list-item flex items-center justify-between"
                   key={index}
                 >
-                  {" "}
                   <div className="display-name">
-                    {" "}
                     <FontAwesomeIcon icon={faFolder} className="mr-4" />{" "}
-                    {folder.name}{" "}
-                  </div>{" "}
-                  <div className="display-toggle" onClick={expandFolderHandler}>
-                    {" "}
-                    <FontAwesomeIcon
-                      icon={faChevronDown}
-                      className="mr-4 rotate-icon"
-                      cursor="pointer"
-                    />{" "}
-                  </div>{" "}
-                  <div className="addFileToFolder" onClick={openUploadFileForm}>
-                    {" "}
-                    <FontAwesomeIcon icon={faFile} className="mr-4" /> Add a
-                    file{" "}
-                  </div>{" "}
-                  <div className="folder-content"> </div>
+                    {folder.name}
+                  </div>
                 </div>
               </>
             ))}

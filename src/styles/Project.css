@@ -51,6 +51,12 @@
     padding: 0.5rem;
 }
 
+.folder-list-item .display-name {
+    width: 64vw;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid black;
+}
+
 .blur-bg-project {
   position: fixed;
   top: 0%;
@@ -149,24 +155,3 @@
 .addFolderInput input {
     padding: 0.3rem;
 }
-
-.folder-content {
-    display: none;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
-  }
-  
-  .folder-content.expanded {
-    display: block;
-    max-height: 200px;
-    transition: max-height 0.3s ease-in;
-  }
-  
-  .rotate-icon {
-    transition: transform 0.3s;
-  }
-  
-  .rotate-icon.expanded {
-    transform: rotate(180deg);
-  }
-  
