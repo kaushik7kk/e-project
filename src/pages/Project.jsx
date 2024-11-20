@@ -5,7 +5,11 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import "../styles/Project.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFile, faFolder } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFile,
+  faFolder,
+  faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function Project() {
   const { projectId } = useParams();
@@ -181,6 +185,36 @@ export default function Project() {
     closeUploadFolderForm();
   };
 
+  const folderStates = {}; // Track the state of each folder
+
+  function expandFolderHandler(e) {
+    const folderItem = e.currentTarget.closest(".folder-list-item");
+    const index = folderItem.getAttribute("key"); // Use key or unique identifier
+    const folderContent = folderItem.querySelector(".folder-content");
+    const chevronIcon = folderItem.querySelector(".rotate-icon");
+    const addFileToFolder = folderItem.querySelector(".addFileToFolder");
+
+    if (!folderStates[index]) {
+      folderStates[index] = { isExpanded: false };
+    }
+
+    folderStates[index].isExpanded = !folderStates[index].isExpanded;
+
+    if (folderStates[index].isExpanded) {
+      folderContent.classList.add("expanded");
+      chevronIcon.classList.add("expanded");
+      addFileToFolder.style.display = "block";
+    } else {
+      folderContent.classList.remove("expanded");
+      chevronIcon.classList.remove("expanded");
+      addFileToFolder.style.display = "none";
+    }
+  }
+
+  document
+    .querySelectorAll(".addFileToFolder")
+    .forEach((item) => (item.style.display = "none"));
+
   return (
     <>
       <Topbar />
@@ -203,9 +237,30 @@ export default function Project() {
           <div className="file-list mx-auto mt-4 p-4">
             {folders.map((folder, index) => (
               <>
-                <div className="folder-list-item" key={index}>
-                  <FontAwesomeIcon icon={faFolder} className="mr-4" />
-                  {folder.name}
+                <div
+                  className="folder-list-item flex items-center justify-between"
+                  key={index}
+                >
+                  {" "}
+                  <div className="display-name">
+                    {" "}
+                    <FontAwesomeIcon icon={faFolder} className="mr-4" />{" "}
+                    {folder.name}{" "}
+                  </div>{" "}
+                  <div className="display-toggle" onClick={expandFolderHandler}>
+                    {" "}
+                    <FontAwesomeIcon
+                      icon={faChevronDown}
+                      className="mr-4 rotate-icon"
+                      cursor="pointer"
+                    />{" "}
+                  </div>{" "}
+                  <div className="addFileToFolder" onClick={openUploadFileForm}>
+                    {" "}
+                    <FontAwesomeIcon icon={faFile} className="mr-4" /> Add a
+                    file{" "}
+                  </div>{" "}
+                  <div className="folder-content"> </div>
                 </div>
               </>
             ))}
