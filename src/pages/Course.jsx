@@ -175,9 +175,9 @@ export default function Course() {
               <div id="add-project" className="action p-5" onClick={openForm}>
                 Add a project
               </div>
-              <div id="delete-project" className="action mt-5 p-5">
+              {/* <div id="delete-project" className="action mt-5 p-5">
                 Delete a project
-              </div>
+              </div> */}
               <div
                 id="my-projects"
                 className="action mt-5 p-5"

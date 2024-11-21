@@ -3,6 +3,7 @@ import {
   addProjectController,
   deleteProjectController,
   getAllProjectsByCourseController,
+  getFilesByIdsController,
   getFilesByProjectIdController,
   getFoldersByProjectIdController,
   getProjectDetailsByIdController,
@@ -18,5 +19,6 @@ router.delete("/delete-project/:id", deleteProjectController);
 router.get("/get-project-details/:id", getProjectDetailsByIdController);
 router.get("/get-files/:id", getFilesByProjectIdController);
 router.get("/get-folders/:id", getFoldersByProjectIdController);
+router.post("/get-files-by-ids", getFilesByIdsController);
 
 export default router;

@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFile,
   faFolder,
-  faChevronDown,
 } from "@fortawesome/free-solid-svg-icons";
 
 export default function Project() {
@@ -16,10 +15,12 @@ export default function Project() {
   const [project, setProject] = useState({});
   const [files, setFiles] = useState([]);
   const [folders, setFolders] = useState([]);
+  const [fileData, setFileData] = useState([]);
 
   const blurBg = document.querySelector(".blur-bg-project");
   const addFileDialog = document.querySelector(".addFileDialog");
   const addFolderDialog = document.querySelector(".addFolderDialog");
+  const addFolderFileDialog = document.querySelector(".addFolderFileDialog");
 
   const openUploadFileForm = () => {
     blurBg.style.display = "flex";
@@ -39,6 +40,16 @@ export default function Project() {
   const closeUploadFolderForm = () => {
     blurBg.style.display = "none";
     addFolderDialog.style.display = "none";
+  };
+
+  const openUploadFolderFileForm = () => {
+    blurBg.style.display = "flex";
+    addFolderFileDialog.style.display = "flex";
+  };
+
+  const closeUploadFolderFileForm = () => {
+    blurBg.style.display = "none";
+    addFolderFileDialog.style.display = "none";
   };
 
   useEffect(() => {
@@ -102,6 +113,30 @@ export default function Project() {
     fetchFilesByProject();
     fetchFoldersByProject();
   }, [projectId]);
+
+  useEffect(() => {
+    const fetchFiles = async () => {
+      try {
+        let allFiles = [];
+        for (const folder of folders) {
+          const res = await axios.post(
+            `http://localhost:8000/api/v1/projects/get-files-by-ids`,
+            { fileIds: folder.files }
+          );
+          if (res.data.success) {
+            allFiles = [...allFiles, ...res.data.files];
+          }
+        }
+        setFileData(allFiles);
+      } catch (err) {
+        const errorMsg = err.response?.data.message || "Error fetching files";
+        toast.error(errorMsg, { duration: 3000 });
+      }
+    };
+    if (folders.length > 0) {
+      fetchFiles();
+    }
+  }, [folders]);
 
   const addFileSubmitHandler = async (e) => {
     e.preventDefault();
@@ -185,6 +220,53 @@ export default function Project() {
     closeUploadFolderForm();
   };
 
+  const addFolderFileSubmitHandler = async (e, folderId) => {
+    e.preventDefault();
+
+    const folderFileInput = document.querySelector("#folderFileUpload");
+    const file = folderFileInput.files[0];
+
+    if (!file) {
+      toast.error("Please select a file", {
+        duration: 3000,
+      });
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("id", folderId);
+
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/api/v1/upload/add-folder-file`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (res.data.success) {
+        toast.success(res.data.message, {
+          duration: 3000,
+        });
+        folderFileInput.value = "";
+      } else {
+        toast.error(res.data.message, {
+          duration: 3000,
+        });
+      }
+    } catch (err) {
+      const errorMsg = err.response?.data.message;
+      toast.error(errorMsg, {
+        duration: 3000,
+      });
+    }
+    closeUploadFolderFileForm();
+  };
+
   return (
     <>
       <Topbar />
@@ -207,21 +289,65 @@ export default function Project() {
           <div className="file-list mx-auto mt-4 p-4">
             {folders.map((folder, index) => (
               <>
-                <div
-                  className="folder-list-item flex items-center justify-between"
-                  key={index}
-                >
-                  <div className="display-name">
-                    <FontAwesomeIcon icon={faFolder} className="mr-4" />{" "}
-                    {folder.name}
+                <div className="folder-list-item flex flex-col" key={index}>
+                  <div className="folder-desc flex justify-between">
+                    <div className="display-name">
+                      <FontAwesomeIcon icon={faFolder} className="mr-4" />{" "}
+                      {folder.name}
+                    </div>
+                    <div
+                      className="addFileToFolder"
+                      onClick={openUploadFolderFileForm}
+                    >
+                      <FontAwesomeIcon
+                        icon={faFile}
+                        className="mr-4"
+                        cursor="pointer"
+                      />
+                      Add a file
+                    </div>
                   </div>
+                  <div className="folder-file-list">
+                    {fileData
+                      .filter((file) => folder.files.includes(file._id))
+                      .map((file, fileIndex) => (
+                        <div key={fileIndex} className="pl-3">
+                          <FontAwesomeIcon icon={faFile} className="mr-2" />
+                          {file.originalname}
+                        </div>
+                      ))}
+                  </div>
+                </div>
+                <div className="addFolderFileDialog flex flex-col justify-between items-center">
+                  <div className="addFolderFileHeader flex justify-between">
+                    <div className="addFolderFileHeading">
+                      Choose a file to upload
+                    </div>
+                    <div
+                      className="addFolderFileClose"
+                      onClick={closeUploadFolderFileForm}
+                    >
+                      X
+                    </div>
+                  </div>
+                  <form
+                    onSubmit={(e) => addFolderFileSubmitHandler(e, folder._id)}
+                    className="addFolderFileForm flex flex-col justify-around items-center"
+                  >
+                    <input
+                      type="file"
+                      name="folderFileUpload"
+                      id="folderFileUpload"
+                    />
+                    <button type="submit">ADD</button>
+                  </form>
                 </div>
               </>
             ))}
             {files.map((file, index) => (
               <>
                 <div className="file-list-item" key={index}>
-                  <FontAwesomeIcon icon={faFile} className="mr-4" />
+                  <FontAwesomeIcon icon={faFile} className=" pl-3 mr-4" />
                   {file.originalname}
                 </div>
               </>

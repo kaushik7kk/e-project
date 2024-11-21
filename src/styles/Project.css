@@ -40,21 +40,22 @@
 }
 
 .file-list .folder-list-item {
-    width: 64vw;
-    /* border: 1px solid black; */
-    padding: 0.5rem;
+  width: 64vw;
+  /* border: 1px solid black; */
+  padding: 0.5rem;
+  border-bottom: 1px solid black;
 }
 
 .file-list .file-list-item {
-    width: 64vw;
-    /* border: 1px solid black; */
-    padding: 0.5rem;
+  width: 64vw;
+  /* border: 1px solid black; */
+  padding: 0.5rem;
 }
 
 .folder-list-item .display-name {
-    width: 64vw;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid black;
+  width: 40vw;
+  padding-bottom: 0.5rem;
+  /* border-bottom: 1px solid black; */
 }
 
 .blur-bg-project {
@@ -112,6 +113,54 @@
   transform: scale(0.7);
 }
 
+.addFolderFileDialog {
+  z-index: 95;
+  position: fixed;
+  top: 30%;
+  left: 30%;
+  width: 40vw;
+  height: 40vh;
+  /* border: 1px solid black; */
+  background-color: beige;
+  padding: 1rem;
+  border-radius: 10px;
+  display: none;
+}
+
+.addFolderFileDialog input {
+  cursor: pointer;
+}
+
+.addFolderFileDialog .addFolderFileHeader {
+  width: 37vw;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.addFolderFileHeader .addFolderFileClose {
+  cursor: pointer;
+}
+
+.addFolderFileForm {
+  width: 25vw;
+  height: 25vh;
+}
+
+.addFolderFileForm button {
+  box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.533);
+  padding: 1rem;
+  border-radius: 10px;
+  transition: 0.5s all;
+}
+
+.addFolderFileForm button:active {
+  transform: scale(0.7);
+}
+
+.addFileToFolder {
+  cursor: pointer;
+}
+
 .addFolderDialog {
   z-index: 95;
   position: fixed;
@@ -153,5 +202,5 @@
 }
 
 .addFolderInput input {
-    padding: 0.3rem;
+  padding: 0.3rem;
 }

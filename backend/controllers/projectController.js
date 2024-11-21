@@ -206,13 +206,36 @@ export const getFoldersByProjectIdController = async (req, res) => {
       res.status(404).send({
         success: false,
         message: "Project not found",
-        folders: []
-      })
+        folders: [],
+      });
     }
   } catch (error) {
     res.status(500).send({
       success: false,
-      message: "Error finding folders"
-    })
+      message: "Error finding folders",
+    });
+  }
+};
+
+export const getFilesByIdsController = async (req, res) => {
+  try {
+    const { fileIds } = req.body;
+    const files = await FileModel.find({ _id: { $in: fileIds } });
+    res
+      .status(200)
+      .send({
+        success: true,
+        message: "Files retrieved successfully",
+        files: files,
+      });
+  } catch (error) {
+    console.error("Error retrieving files:", error);
+    res
+      .status(500)
+      .send({
+        success: false,
+        message: "Error retrieving files",
+        error: error.message,
+      });
   }
 };
